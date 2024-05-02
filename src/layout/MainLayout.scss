@@ -1,0 +1,19 @@
+.main-container {
+    display: grid;
+    grid-template-rows: 72px 1fr;
+
+    .bottom {
+        display: grid;
+        grid-template-columns: 224px 1fr;
+    }
+    // .top {
+    //     grid-area: header;
+    // }
+    // .menu-vertical {
+    //     grid-area: leftbar;
+    // }
+    // .main-content {
+    //     grid-area: main;
+    // }
+
+}
