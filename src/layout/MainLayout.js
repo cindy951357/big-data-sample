@@ -1,6 +1,7 @@
 import './MainLayout.scss';
 import { Top } from '../components/Top';
 import { SideMenu } from '../components/SideMenu';
+import { MainArea } from '../components/MainArea';
 
 const MainLayout = () => {
     return (
@@ -12,7 +13,9 @@ const MainLayout = () => {
                  <div className="menu-vertical">
                     <SideMenu />
                 </div>
-                <div className="main-content"></div>
+                <div className="main-content">
+                    <MainArea/>
+                </div>
             </div>
            
         </div>
