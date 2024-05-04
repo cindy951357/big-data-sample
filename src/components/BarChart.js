@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { fetchCases } from '../feature/case/caseSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 const BarChartArea = () => {

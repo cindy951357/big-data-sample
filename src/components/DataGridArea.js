@@ -51,7 +51,7 @@ const columns = [
   
 
 const DataGridArea = () => {
-   const casesTableData = useSelector(state => state.case.value.table_data);
+   const casesTableData = useSelector(state => state.case.filterCases);
    const [curCases, setCurCases] = useState([]);
 
    useEffect(() => {

@@ -32,41 +32,28 @@ export const caseSlice = createSlice({
   name: 'case',
   initialState: {
     value: [{table_data: []}],
+    filterCases: [],
   },
   reducers: {
-    getCases: async(state) => {
-        const response = await fetch('https://svc-dashboard-dummy-api-7ej42xs2pa-de.a.run.app/api/get-data',
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
-                },
-                body: JSON.stringify(        
-                        {
-                            "start_time": "",
-                            "end_time": "",
-                            "category": [],
-                            "chunk": 1
-                }),
-            }
-        );
-        state.value = response.json().then(result => {
-            state.value = result;
-            console.log('result'+result);
-        });
-        
+    filterCasesByCategories: (state, action) => {
+        const wantCategories = action.payload;
+        console.log("wantCategories",wantCategories)
+        state.filterCases = state.filterCases.filter((elem) => 
+            wantCategories.includes(elem.main_category))
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCases.fulfilled, (state, action) => {
       state.value = action.payload.data;
+      state.filterCases = action.payload.data.table_data;
+      console.log("state.filterCases", state.filterCases);
     })
   },
 })
 
-export const { getCases } = caseSlice.actions
+export const { getCases,
+    filterCasesByCategories,
+ } = caseSlice.actions
 export { fetchCases };
 
 export default caseSlice.reducer
