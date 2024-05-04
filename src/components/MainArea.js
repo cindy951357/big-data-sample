@@ -1,3 +1,4 @@
+import { DataGridArea } from "./DataGridArea";
 import { FilterCaseBar } from "./FilterCaseBar";
 
 const RowsOfPeriod = () => {
@@ -23,6 +24,7 @@ const MainArea = () => {
             ">
                 <FilterCaseBar/>
                 <RowsOfPeriod/>
+                <DataGridArea/>
             </div>
         </div>
     )
