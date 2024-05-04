@@ -11,16 +11,27 @@ export const removeFromCategory = createAsyncThunk(
   }
 );
 
+export const addToCategory = createAsyncThunk(
+  'category/addToCategory',
+  async(payload, { dispatch, getState }) => {
+    const store= getState();
+    dispatch(addOneToCategories(payload)); 
+    dispatch(filterCasesByCategories([...store.category.value, payload]));
+  }
+);
+
 export const categorySlice = createSlice({
   name: 'category',
   initialState: {
     value: [],
+    initialCategory: [],
   },
   reducers: {
     initCategories: (state, action) => {
        state.value = action.payload;
+       state.initialCategory = action.payload;
     },
-    addCategory: (state, action) => {
+    addOneToCategories: (state, action) => {
       state.value = [...state.value, action.payload];
     },
     setCategories: (state, action) => {
@@ -30,7 +41,7 @@ export const categorySlice = createSlice({
 })
 
 export const { initCategories, 
-  addCategory,
+  addOneToCategories,
   setCategories,
 } = categorySlice.actions
 

@@ -8,7 +8,6 @@ const FilterTag = ({tagText = "標籤"}) => {
     const dispatch = useDispatch();
 
     const onRemoveBtnClick = () => {
-        console.log("按下刪除按鈕")
         dispatch(removeFromCategory(tagText));
     };
 

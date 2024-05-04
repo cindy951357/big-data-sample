@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios';
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0X3VzZXIxIiwiZXhwIjoxNzE2NjIzODY0fQ.N7ZLHiwARPLjDsPE1jCbSeUs2O03kFI36B6l9rQNMTs';
 
 const fetchCases = createAsyncThunk(
@@ -33,12 +32,13 @@ export const caseSlice = createSlice({
   initialState: {
     value: [{table_data: []}],
     filterCases: [],
+    initialCase: [],
   },
   reducers: {
     filterCasesByCategories: (state, action) => {
         const wantCategories = action.payload;
-        console.log("wantCategories",wantCategories)
-        state.filterCases = state.filterCases.filter((elem) => 
+        console.log("wantCategories", wantCategories);
+        state.filterCases = state.initialCase.filter((elem) => 
             wantCategories.includes(elem.main_category))
     },
   },
@@ -46,7 +46,7 @@ export const caseSlice = createSlice({
     builder.addCase(fetchCases.fulfilled, (state, action) => {
       state.value = action.payload.data;
       state.filterCases = action.payload.data.table_data;
-      console.log("state.filterCases", state.filterCases);
+      state.initialCase = action.payload.data.table_data;
     })
   },
 })

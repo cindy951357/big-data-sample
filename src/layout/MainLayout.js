@@ -12,14 +12,13 @@ const MainLayout = () => {
     const fetchedCase = useSelector(state => state.case.value);
     useEffect(() => {
       dispatch(fetchCases());
-  }, []);
+  }, [dispatch]);
 
     useEffect(() => {
         if(fetchedCase !== undefined) {
-            console.log("fetchedCase.categories, going to dispatch", fetchedCase.categories);
             dispatch(initCategories(fetchedCase.categories));
         }
-    }, [fetchedCase]);
+    }, [fetchedCase, dispatch]);
 
     return (
         <div className="main-container h-full">
