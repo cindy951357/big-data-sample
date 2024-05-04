@@ -1,5 +1,6 @@
 import { DataGridArea } from "./DataGridArea";
 import { FilterCaseBar } from "./FilterCaseBar";
+import { BarChartArea } from "./BarChart";
 
 const RowsOfPeriod = () => {
     return (
@@ -24,6 +25,7 @@ const MainArea = () => {
             ">
                 <FilterCaseBar/>
                 <RowsOfPeriod/>
+                <BarChartArea/>
                 <DataGridArea/>
             </div>
         </div>

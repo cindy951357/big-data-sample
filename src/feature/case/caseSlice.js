@@ -67,6 +67,6 @@ export const caseSlice = createSlice({
 })
 
 export const { getCases } = caseSlice.actions
-export {fetchCases};
+export { fetchCases };
 
 export default caseSlice.reducer

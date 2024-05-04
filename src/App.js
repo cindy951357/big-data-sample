@@ -4,6 +4,7 @@ import store from './store';
 import { MainLayout } from './layout/MainLayout';
 
 function App() {
+
   return (
     <Provider store={store}>
       <div className="App">
