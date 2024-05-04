@@ -11,6 +11,16 @@ const RecoverableTag = ({ tagText }) => {
     const [selected, setSelected] = useState(true);
     const dispatch = useDispatch();
 
+    const stateOfCategories = useSelector(state => state.category.value);
+
+    useEffect(() => {
+        if(stateOfCategories.includes(tagText) && !selected) {
+            setSelected(true);
+        }else if (!stateOfCategories.includes(tagText) && selected) {
+            setSelected(false);
+        }
+    }, [stateOfCategories,]);
+
     const toggleSelected = () => {
         if (selected) {
             dispatch(removeFromCategory(tagText));
