@@ -52,6 +52,7 @@ const FilterCaseBar = () => {
 
     const [allCategories, setAllCategories] = useState([]);
     const [initCategories, setInitCategories] = useState([]);
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
 
     const onSearchBtnClick = () => {
         dispatch(fetchCases());
@@ -70,6 +71,9 @@ const FilterCaseBar = () => {
             }
         }, [initalCategories]);
     
+    const onArrowBtnClick = () => {
+        setIsPanelOpen(!isPanelOpen);
+    }
 
     return (
         <div className="filter-case-bar flex border-0 border-l-[4px] border-[#52697A]
@@ -86,18 +90,19 @@ const FilterCaseBar = () => {
 
                         <img src={Downward} alt="down" className=" flex cursor-pointer
                             w-[20px] h-[20px] mr-[12.5px]
-                        "/>
+                        " onClick={onArrowBtnClick}/>
                     
                 </div>
-                <div className="all-tags all-recoverable-tags absolute top-[74px] right-0 w-[330px]
-                    z-10 bg-white border border-[#52697A] rounded
-                ">
-                            {initCategories.map((category, i) => (
-                                <div key={`${i} ${category}`} className="w-full">
-                                    <RecoverableTag tagText={category}/>
-                                </div>
-                            ))}
-                </div>
+                {isPanelOpen && <div className="all-tags all-recoverable-tags absolute top-[74px] right-0 w-[330px]
+                        z-10 bg-white border border-[#52697A] rounded
+                    ">
+                                {initCategories.map((category, i) => (
+                                    <div key={`${i} ${category}`} className="w-full">
+                                        <RecoverableTag tagText={category}/>
+                                    </div>
+                                ))}
+                    </div>
+                }
             </div>            
             <button className="flex border-0 rounded-full w-[68px] h-[37px]
                 bg-[#D7DFE4] justify-center items-center ml-[8px]"
