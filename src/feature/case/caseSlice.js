@@ -24,8 +24,36 @@ const fetchCases = createAsyncThunk(
     const toJson = response.json();
 
     return toJson;
-    },
-  )
+  },
+);
+
+export const fetchCasesByDate = createAsyncThunk(
+  'case/fetchCasesByDate',
+  async (payload, { dispatch, getState}) => {
+      const response = await fetch('https://svc-dashboard-dummy-api-7ej42xs2pa-de.a.run.app/api/get-data',
+      {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` 
+          },
+          body: JSON.stringify(        
+                  {
+                      "start_time": payload.inputStartDate,
+                      "end_time": payload.inputEndDate,
+                      "category": [],
+                      "chunk": 1
+          }),
+      }
+  );
+  const toJson = response.json();
+
+  dispatch(filterCaseByDate(payload));
+
+  return toJson;
+},
+);
 
 export const caseSlice = createSlice({
   name: 'case',
@@ -41,6 +69,17 @@ export const caseSlice = createSlice({
         state.filterCases = state.initialCase.filter((elem) => 
             wantCategories.includes(elem.main_category))
     },
+    filterCaseByDate: (state, action) => {
+        const { inputStartDate, inputEndDate } = action.payload;
+
+        state.filterCases = state.initialCase.filter(elem => {
+           const recordTime = new Date(elem.record_time);
+           const startTime = new Date(inputStartDate);
+           const endTime = new Date(inputEndDate);
+
+           return startTime.getTime() < recordTime.getTime && endTime.getTime() > recordTime.getTime();
+        });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCases.fulfilled, (state, action) => {
@@ -53,6 +92,7 @@ export const caseSlice = createSlice({
 
 export const { getCases,
     filterCasesByCategories,
+    filterCaseByDate
  } = caseSlice.actions
 export { fetchCases };
 
