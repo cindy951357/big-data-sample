@@ -3,6 +3,7 @@ import IconMenu from "../assets/images/icon-menu.png";
 import IconDatePicker from "../assets/images/icon-datepicker.png";
 import { useDispatch } from 'react-redux';
 import { fetchCasesByDate } from '../feature/case/caseSlice';
+import { setStartDate, setEndDate, } from '../feature/case/startEndDateSlice';
 
 const DateTimePeriodComponent = () => {
     const dispatch = useDispatch();
@@ -12,10 +13,12 @@ const DateTimePeriodComponent = () => {
 
     const onInputStartChange = e => {
         setInputStartDate(e.target.value);
+        dispatch(setStartDate(e.target.value.replaceAll('-','/')));
     }
 
     const onInputEndChange = e => {
         setInputEndDate(e.target.value);
+        dispatch(setEndDate(e.target.value.replaceAll('-','/')));
     }
 
     const searchByDate = () => {

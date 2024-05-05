@@ -30,6 +30,7 @@ const fetchCases = createAsyncThunk(
 export const fetchCasesByDate = createAsyncThunk(
   'case/fetchCasesByDate',
   async (payload, { dispatch, getState}) => {
+      const store = getState(); 
       const response = await fetch('https://svc-dashboard-dummy-api-7ej42xs2pa-de.a.run.app/api/get-data',
       {
           method: "POST",
@@ -49,7 +50,10 @@ export const fetchCasesByDate = createAsyncThunk(
   );
   const toJson = response.json();
 
-  dispatch(filterCaseByDate(payload));
+  dispatch(filterCaseByDateAndCategory({
+    ...payload,
+    wantCategory: store.category.value
+  }));
 
   return toJson;
 },
@@ -69,20 +73,25 @@ export const caseSlice = createSlice({
         state.filterCases = state.initialCase.filter((elem) => 
             wantCategories.includes(elem.main_category))
     },
-    filterCaseByDate: (state, action) => {
-        const { inputStartDate, inputEndDate } = action.payload;
+    filterCaseByDateAndCategory: (state, action) => {
+        const { inputStartDate, inputEndDate, wantCategory } = action.payload;
         state.filterCases = state.initialCase.filter(elem => {
+            let dateCondition, categoryCondition;
+
            const recordTime = new Date(elem.record_time);
-           console.log("elem.record_time",elem.record_time);
            const startTime = new Date(inputStartDate);
            const endTime = new Date(inputEndDate);
             if (inputEndDate === '') {
-              return startTime.getTime() < recordTime.getTime();
+              dateCondition = startTime.getTime() < recordTime.getTime();
             } else if (inputStartDate === '') {
-              return endTime.getTime() < recordTime.getTime();
-            } 
-            return startTime.getTime() < recordTime.getTime() && endTime.getTime() > recordTime.getTime();
-        });
+              dateCondition = endTime.getTime() < recordTime.getTime();
+            } else {
+              dateCondition = startTime.getTime() < recordTime.getTime() && endTime.getTime() > recordTime.getTime();
+            };
+           
+            categoryCondition = wantCategory.includes(elem.main_category);
+            return dateCondition && categoryCondition;
+          });
     },
   },
   extraReducers: (builder) => {
@@ -96,7 +105,7 @@ export const caseSlice = createSlice({
 
 export const { getCases,
     filterCasesByCategories,
-    filterCaseByDate
+    filterCaseByDateAndCategory
  } = caseSlice.actions
 export { fetchCases };
 

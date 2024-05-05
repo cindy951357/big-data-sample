@@ -1,22 +1,31 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { filterCasesByCategories } from './caseSlice';
+import { filterCaseByDateAndCategory } from './caseSlice';
 
 export const removeFromCategory = createAsyncThunk(
   'category/removeFromCategory',
   async(payload, { dispatch, getState }) => {
-    const store= getState();
+    const store = getState();
     dispatch(setCategories(store.category.value.filter((el => el !== payload)))); 
-    dispatch(filterCasesByCategories(store.category.value.filter((el => el !== payload))));
+    dispatch(filterCaseByDateAndCategory(
+      {
+        wantCategory: store.category.value.filter((el => el !== payload)),
+        inputStartDate: store.startEndDate.value.startDate,
+        inputEndDate: store.startEndDate.value.endDate,
+      }));
   }
 );
 
 export const addToCategory = createAsyncThunk(
   'category/addToCategory',
   async(payload, { dispatch, getState }) => {
-    const store= getState();
+    const store = getState();
     dispatch(addOneToCategories(payload)); 
-    dispatch(filterCasesByCategories([...store.category.value, payload]));
+    dispatch(filterCaseByDateAndCategory({
+      wantCategory: [...store.category.value, payload],
+      inputStartDate: store.startEndDate.value.startDate,
+      inputEndDate: store.startEndDate.value.endDate,
+    }));
   }
 );
 
