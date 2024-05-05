@@ -71,13 +71,17 @@ export const caseSlice = createSlice({
     },
     filterCaseByDate: (state, action) => {
         const { inputStartDate, inputEndDate } = action.payload;
-
         state.filterCases = state.initialCase.filter(elem => {
            const recordTime = new Date(elem.record_time);
+           console.log("elem.record_time",elem.record_time);
            const startTime = new Date(inputStartDate);
            const endTime = new Date(inputEndDate);
-
-           return startTime.getTime() < recordTime.getTime && endTime.getTime() > recordTime.getTime();
+            if (inputEndDate === '') {
+              return startTime.getTime() < recordTime.getTime();
+            } else if (inputStartDate === '') {
+              return endTime.getTime() < recordTime.getTime();
+            } 
+            return startTime.getTime() < recordTime.getTime() && endTime.getTime() > recordTime.getTime();
         });
     },
   },
